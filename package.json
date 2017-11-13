@@ -1,0 +1,8 @@
+{
+  "name": "so-you-say-node-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "p.a.waclawczyk@gmail.com",
+  "license": "MIT",
+  "private": false
+}
