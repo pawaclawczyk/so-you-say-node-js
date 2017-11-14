@@ -1,12 +1,12 @@
-import * as express from "express";
 import * as bodyParser from "body-parser";
+import * as express from "express";
 import { Request, Response } from "express";
 import { Empty } from "./Eisenhower/Model/Matrix";
 import { Task } from "./Eisenhower/Model/Task";
 
 const app = express();
 
-app.use(bodyParser());
+app.use(bodyParser.json());
 
 const hello = (name: string) => "Hello, " + name + "!";
 let matrix = Empty();
@@ -32,3 +32,5 @@ app.delete("/matrix", (req: Request, res: Response) => {
 });
 
 app.listen(3000);
+
+export { app, matrix };
