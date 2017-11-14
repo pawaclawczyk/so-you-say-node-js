@@ -1,12 +1,34 @@
 import * as express from "express";
-import { Request, Response } from "express"
+import * as bodyParser from "body-parser";
+import { Request, Response } from "express";
+import { Empty } from "./Eisenhower/Model/Matrix";
+import { Task } from "./Eisenhower/Model/Task";
 
 const app = express();
 
-const hello = (name: string) => 'Hello, ' + name + '!';
+app.use(bodyParser());
 
-app.get('/', (req: Request, res: Response) => res.send('Homepage'));
+const hello = (name: string) => "Hello, " + name + "!";
+let matrix = Empty();
 
-app.get('/hello/:name', (req: Request, res: Response) => res.send(hello(req.params.name)));
+app.get("/", (req: Request, res: Response) => res.send("Homepage"));
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+app.get("/hello/:name", (req: Request, res: Response) => res.send(hello(req.params.name)));
+
+app.get("/matrix", (req: Request, res: Response) => res.send(matrix));
+
+app.post("/matrix", (req: Request, res: Response) => {
+    const task: Task = req.body;
+
+    matrix = matrix.add(task);
+
+    res.send(matrix);
+});
+
+app.delete("/matrix", (req: Request, res: Response) => {
+    matrix = Empty();
+
+    res.send(matrix);
+});
+
+app.listen(3000);

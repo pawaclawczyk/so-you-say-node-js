@@ -1,7 +1,7 @@
 module.exports = {
   apps : [{
     name   : "app",
-    script : "dist/server.js",
+    script : "dist/src/server.js",
     watch: true
   }]
 }
