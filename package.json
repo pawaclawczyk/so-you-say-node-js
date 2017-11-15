@@ -15,7 +15,7 @@
     "watch-ts": "tsc -w",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "pretest": "yarn run lint",
-    "test": "jest --forceExit"
+    "test": "PORT=3010 jest --forceExit"
   },
   "dependencies": {
     "express": "^4.16.2",

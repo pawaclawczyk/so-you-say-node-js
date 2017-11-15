@@ -31,6 +31,6 @@ app.delete("/matrix", (req: Request, res: Response) => {
     res.send(matrix);
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 export { app, matrix };
