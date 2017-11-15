@@ -1,36 +1,36 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
 import { Request, Response } from "express";
-import { Empty } from "./Eisenhower/Model/Matrix";
-import { Task } from "./Eisenhower/Model/Task";
+import { AddTask, ClearMatrix, MatrixId, SingleMatrixInMemoryRepository, Task } from "./Eisenhower/Predef";
 
 const app = express();
 
 app.use(bodyParser.json());
 
 const hello = (name: string) => "Hello, " + name + "!";
-let matrix = Empty();
+
+const matrixRepository = new SingleMatrixInMemoryRepository();
+const addMatrix = new AddTask(matrixRepository);
+const clearMatrix = new ClearMatrix(matrixRepository);
 
 app.get("/", (req: Request, res: Response) => res.send("Homepage"));
 
 app.get("/hello/:name", (req: Request, res: Response) => res.send(hello(req.params.name)));
 
-app.get("/matrix", (req: Request, res: Response) => res.send(matrix));
+app.get("/matrix", (req: Request, res: Response) => res.send(matrixRepository.get(1 as MatrixId)));
 
 app.post("/matrix", (req: Request, res: Response) => {
-    const task: Task = req.body;
+    addMatrix.handle(1 as MatrixId, req.body as Task);
 
-    matrix = matrix.add(task);
-
-    res.send(matrix);
+    res.send(matrixRepository.get(1 as MatrixId));
 });
 
 app.delete("/matrix", (req: Request, res: Response) => {
-    matrix = Empty();
+    clearMatrix.handle(1 as MatrixId);
 
-    res.send(matrix);
+    res.send(matrixRepository.get(1 as MatrixId));
 });
 
 app.listen(process.env.PORT || 3000);
 
-export { app, matrix };
+export { app };

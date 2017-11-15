@@ -35,6 +35,10 @@ export class Matrix {
             return this;
         }
     }
+
+    public clear(): Matrix {
+        return Empty();
+    }
 }
 
 export const Empty = () => new Matrix([], [], [], []);
