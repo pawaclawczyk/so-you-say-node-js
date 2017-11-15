@@ -5,8 +5,10 @@ import { Task } from "../src/Eisenhower/Model/Task";
 import { Empty, Matrix } from "../src/Eisenhower/Model/Matrix";
 
 describe("Eisenhower Matrix API", () => {
-    it("returns an Eisenhower Matrix", async () => {
-        const response: Response = await request(app)
+    const server = request(app);
+
+    it("shows the matrix", async () => {
+        const response: Response = await server
             .get("/matrix");
 
         expect(response.status).toBe(200);
@@ -14,24 +16,30 @@ describe("Eisenhower Matrix API", () => {
         expect(response.body).toEqual(Empty());
     });
 
-    it("adds task to Eisenhower Matrix", async () => {
+    it("adds task to the matrix", async () => {
         const task = new Task("My first task", true, true);
 
-        const response = await request(app)
+        const response = await server
             .post("/matrix")
             .send(task);
 
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(201);
 
-        expect(response.body).toEqual(new Matrix([task], [], [], []));
+        const matrixResponse = await server
+            .get("/matrix");
+
+        expect(matrixResponse.body).toEqual(new Matrix([task], [], [], []));
     });
 
-    it("adds clears Eisenhower Matrix", async () => {
-        const response = await request(app)
+    it("adds clears the matrix", async () => {
+        const response = await server
             .delete("/matrix");
 
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(204);
 
-        expect(response.body).toEqual(Empty());
+        const matrixResponse = await server
+            .get("/matrix");
+
+        expect(matrixResponse.body).toEqual(Empty());
     });
 });

@@ -4,4 +4,4 @@ module.exports = {
     script : "dist/src/server.js",
     watch: true
   }]
-}
+};

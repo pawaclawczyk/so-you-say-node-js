@@ -22,13 +22,13 @@ app.get("/matrix", (req: Request, res: Response) => res.send(matrixRepository.ge
 app.post("/matrix", (req: Request, res: Response) => {
     addMatrix.handle(1 as MatrixId, req.body as Task);
 
-    res.send(matrixRepository.get(1 as MatrixId));
+    res.status(201).send();
 });
 
 app.delete("/matrix", (req: Request, res: Response) => {
     clearMatrix.handle(1 as MatrixId);
 
-    res.send(matrixRepository.get(1 as MatrixId));
+    res.status(204).send();
 });
 
 app.listen(process.env.PORT || 3000);
