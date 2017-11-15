@@ -31,7 +31,7 @@ describe("Eisenhower Matrix API", () => {
         expect(matrixResponse.body).toEqual(new Matrix([task], [], [], []));
     });
 
-    it("adds clears the matrix", async () => {
+    it("clears the matrix", async () => {
         const response = await server
             .delete("/matrix");
 
