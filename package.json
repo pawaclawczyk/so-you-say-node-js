@@ -18,8 +18,16 @@
     "test": "PORT=3010 jest --forceExit"
   },
   "dependencies": {
+    "@nestjs/common": "^4.2.2",
+    "@nestjs/core": "^4.2.2",
+    "@nestjs/microservices": "^4.2.2",
+    "@nestjs/testing": "^4.2.2",
+    "@nestjs/websockets": "^4.2.2",
     "express": "^4.16.2",
-    "pm2": "^2.7.2"
+    "pm2": "^2.7.2",
+    "reflect-metadata": "^0.1.10",
+    "rxjs": "^5.5.2",
+    "ts-node": "^3.3.0"
   },
   "devDependencies": {
     "@types/express": "^4.0.39",

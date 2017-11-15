@@ -1,3 +1,1 @@
-type MatrixId = number;
-
-export { MatrixId };
+export type MatrixId = number;

@@ -1,8 +1,10 @@
+import { Component } from "@nestjs/common";
 import { Empty, Matrix } from "../../Model/Matrix";
 import { MatrixId } from "../../Model/MatrixId";
 import { MatrixRepository } from "../../Model/MatrixRepository";
 
-class SingleMatrixInMemoryRepository implements MatrixRepository {
+@Component()
+export class SingleMatrixInMemoryRepository implements MatrixRepository {
     private matrix: Matrix;
 
     constructor() {
@@ -17,5 +19,3 @@ class SingleMatrixInMemoryRepository implements MatrixRepository {
         this.matrix = matrix;
     }
 }
-
-export { SingleMatrixInMemoryRepository };
