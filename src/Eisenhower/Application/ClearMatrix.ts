@@ -1,6 +1,6 @@
-import { Component, Dependencies } from "@nestjs/common";
-import {MatrixId} from "../Model/MatrixId";
-import {MatrixRepository} from "../Model/MatrixRepository";
+import { Component } from "@nestjs/common";
+import { MatrixId } from "../Model/MatrixId";
+import { MatrixRepository } from "../Model/MatrixRepository";
 
 @Component()
 export class ClearMatrix {

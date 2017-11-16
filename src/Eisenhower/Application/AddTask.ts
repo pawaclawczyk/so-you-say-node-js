@@ -1,4 +1,4 @@
-import { Component, Dependencies } from "@nestjs/common";
+import { Component } from "@nestjs/common";
 import { MatrixId } from "../Model/MatrixId";
 import { MatrixRepository } from "../Model/MatrixRepository";
 import { Task } from "../Model/Task";
