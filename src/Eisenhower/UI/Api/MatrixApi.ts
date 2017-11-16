@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { AddTask, ClearMatrix, MatrixRepository, SingleMatrixInMemoryRepository } from "../../predef";
-import {AddTaskAction} from "./Controller/Matrix/AddTaskAction";
-import {ClearTasksAction} from "./Controller/Matrix/ClearTasksAction";
-import {GetTaskAction} from "./Controller/Matrix/GetTaskAction";
+import { AddTaskAction } from "./Controller/Matrix/AddTaskAction";
+import { ClearTasksAction } from "./Controller/Matrix/ClearTasksAction";
+import { GetTaskAction } from "./Controller/Matrix/GetTaskAction";
 
 @Module({
     components: [

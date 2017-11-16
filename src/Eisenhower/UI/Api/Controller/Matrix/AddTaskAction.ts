@@ -1,6 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { AddTask } from "../../../../Application/AddTask";
-import { MatrixId, Task } from "../../../../predef";
+import { AddTask, MatrixId, Task } from "../../../../predef";
 
 @Controller("matrix")
 export class AddTaskAction {

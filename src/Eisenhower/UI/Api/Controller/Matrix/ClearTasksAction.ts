@@ -1,6 +1,5 @@
 import { Controller, Delete, HttpCode } from "@nestjs/common";
-import { ClearMatrix } from "../../../../Application/ClearMatrix";
-import { MatrixId } from "../../../../Model/MatrixId";
+import { ClearMatrix, MatrixId } from "../../../../predef";
 
 @Controller("matrix")
 export class ClearTasksAction {
