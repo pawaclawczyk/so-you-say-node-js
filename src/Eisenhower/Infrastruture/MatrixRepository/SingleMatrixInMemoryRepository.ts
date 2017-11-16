@@ -4,10 +4,12 @@ import { MatrixId } from "../../Model/MatrixId";
 import { MatrixRepository } from "../../Model/MatrixRepository";
 
 @Component()
-export class SingleMatrixInMemoryRepository implements MatrixRepository {
+export class SingleMatrixInMemoryRepository extends MatrixRepository {
     private matrix: Matrix;
 
     constructor() {
+        super();
+
         this.matrix = Empty();
     }
 

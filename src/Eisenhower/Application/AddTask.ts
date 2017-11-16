@@ -4,7 +4,6 @@ import { MatrixRepository } from "../Model/MatrixRepository";
 import { Task } from "../Model/Task";
 
 @Component()
-@Dependencies("MatrixRepository")
 export class AddTask {
     constructor(private repository: MatrixRepository) {}
 
