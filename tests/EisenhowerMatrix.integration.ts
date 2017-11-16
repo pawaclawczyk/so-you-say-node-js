@@ -5,7 +5,7 @@ import * as request from "supertest";
 import { Response } from "supertest";
 import { Empty, Matrix } from "../src/Eisenhower/Model/Matrix";
 import { Task } from "../src/Eisenhower/Model/Task";
-import { ApplicationModule } from "../src/Modules/app.module";
+import { MatrixApi } from "../src/Eisenhower/UI/Api/MatrixApi";
 
 describe("Eisenhower Matrix API", () => {
     const server = express();
@@ -14,9 +14,9 @@ describe("Eisenhower Matrix API", () => {
 
     beforeAll(async () => {
         const module = await Test.createTestingModule({
-                modules: [ApplicationModule],
-            })
-            .compile();
+            modules: [MatrixApi],
+        })
+        .compile();
 
         const app = module.createNestApplication(server);
         await app.init();

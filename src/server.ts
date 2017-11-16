@@ -1,12 +1,12 @@
 import { NestFactory } from "@nestjs/core";
 import * as bodyParser from "body-parser";
-import * as express from "express";
-import { ApplicationModule } from "./Modules/app.module";
+import { Api } from "./Eisenhower/UI/Api";
 
 const bootstrap = async () => {
-    const instance = express();
-    instance.use(bodyParser.json());
-    const app = await NestFactory.create(ApplicationModule, instance);
+    const app = await NestFactory.create(Api);
+
+    app.use(bodyParser.json());
+
     app.listen(Number(process.env.PORT) || 3000);
 };
 
