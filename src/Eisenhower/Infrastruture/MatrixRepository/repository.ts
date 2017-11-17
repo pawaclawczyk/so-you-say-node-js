@@ -1,18 +1,19 @@
 import { Map } from "immutable";
+import { Maybe } from "monet";
 
-type RepositoryGet<ID, T> = (id: ID) => T;
-type RepositoryStory<T> = (x: T) => void;
+export type RepositoryGet<ID, T> = (id: ID) => Maybe<T>;
+export type RepositoryStory<T> = (x: T) => void;
 
-interface Repository<ID, T> {
+export interface Repository<ID, T> {
     get: RepositoryGet<ID, T>;
     store: RepositoryStory<T>;
 }
 
-interface Identifiable<ID> {
+export interface Identifiable<ID> {
     id: ID;
 }
 
-class InMemoryRepository<ID, T extends Identifiable<ID>> implements Repository<ID, T> {
+export class InMemoryRepository<ID, T extends Identifiable<ID>> implements Repository<ID, T> {
     private xs: Map<ID, T>;
 
     constructor() {
@@ -20,7 +21,7 @@ class InMemoryRepository<ID, T extends Identifiable<ID>> implements Repository<I
     }
 
     public get(id) {
-        return this.xs.get(id);
+        return Maybe.fromNull(this.xs.get(id, undefined));
     }
 
     public store(x) {

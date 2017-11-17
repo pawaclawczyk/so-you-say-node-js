@@ -1,8 +1,12 @@
 import { Module } from "@nestjs/common";
-import { AddTask, ClearMatrix, MatrixRepository, SingleMatrixInMemoryRepository } from "../../predef";
+import { InMemoryRepository } from "../../Infrastruture/MatrixRepository/repository";
+import { MatrixId } from "../../Model/MatrixId";
+import { AddTask, ClearMatrix, Matrix, MatrixRepository, SingleMatrixInMemoryRepository } from "../../predef";
 import { AddTaskAction } from "./Controller/Matrix/AddTaskAction";
 import { ClearTasksAction } from "./Controller/Matrix/ClearTasksAction";
 import { GetTaskAction } from "./Controller/Matrix/GetTaskAction";
+
+const MyMatrixRepository = new InMemoryRepository<MatrixId, Matrix>();
 
 @Module({
     components: [
@@ -12,6 +16,10 @@ import { GetTaskAction } from "./Controller/Matrix/GetTaskAction";
             provide: MatrixRepository,
             useClass: SingleMatrixInMemoryRepository,
         },
+        {
+            provide: "MyMatrixRepository",
+            useValue: MyMatrixRepository,
+        },
     ],
     controllers: [
         GetTaskAction,
@@ -19,5 +27,4 @@ import { GetTaskAction } from "./Controller/Matrix/GetTaskAction";
         ClearTasksAction,
     ],
 })
-
 export class MatrixApi {}

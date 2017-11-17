@@ -2,7 +2,8 @@ import { Module } from "@nestjs/common";
 import { MatrixApi } from "./Api/MatrixApi";
 
 @Module({
-    modules: [MatrixApi],
+    modules: [
+        MatrixApi,
+    ],
 })
-
 export class Api {}

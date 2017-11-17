@@ -1,10 +1,11 @@
-import { Controller, Get, HttpStatus } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Inject } from "@nestjs/common";
 import { HttpException } from "@nestjs/core";
-import { Matrix, MatrixId, MatrixRepository } from "../../../../predef";
+import { Repository } from "../../../../Infrastruture/MatrixRepository/repository";
+import { Matrix, MatrixId } from "../../../../predef";
 
 @Controller("matrix")
 export class GetTaskAction {
-    constructor(private readonly matrices: MatrixRepository) {}
+    constructor(@Inject("MyMatrixRepository") private readonly matrices: Repository<MatrixId, Matrix>) {}
 
     @Get()
     public handle(): Matrix {
