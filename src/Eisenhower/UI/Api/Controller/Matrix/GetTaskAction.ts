@@ -8,12 +8,12 @@ export class GetTaskAction {
 
     @Get()
     public handle(): Matrix {
-        return this
-            .matrices
-            .get(1 as MatrixId)
-            .do({
-                nothing: () => { throw new HttpException("Not Found", HttpStatus.NOT_FOUND); },
-            })
-            .valueOrThrow();
+        const matrix = this.matrices.get(1 as MatrixId);
+
+        matrix.orElseRun(() => {
+            throw new HttpException("Matrix not found", HttpStatus.NOT_FOUND);
+        });
+
+        return matrix.just();
     }
 }

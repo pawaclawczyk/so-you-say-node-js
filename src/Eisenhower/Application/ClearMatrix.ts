@@ -12,6 +12,6 @@ export class ClearMatrix {
             .repository
             .get(id)
             .map((m) => m.clear())
-            .map((m) => this.repository.store(m));
+            .forEach((m) => this.repository.store(m));
     }
 }

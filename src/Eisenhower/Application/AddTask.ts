@@ -14,7 +14,7 @@ export class AddTask {
             .repository
             .get(id)
             .map((m) => m.add(task))
-            .map((m) => this.repository.store(m))
+            .forEach((m) => this.repository.store(m))
         ;
     }
 }

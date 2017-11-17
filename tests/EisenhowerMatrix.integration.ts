@@ -3,9 +3,10 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as request from "supertest";
 import { Response } from "supertest";
-import { Empty, Matrix } from "../src/Eisenhower/Model/Matrix";
 import { Task } from "../src/Eisenhower/Model/Task";
 import { MatrixApi } from "../src/Eisenhower/UI/Api/MatrixApi";
+import { EmptyError } from "rxjs/Rx";
+import { EmptyMatrix, Matrix } from "../src/Eisenhower/Model/Matrix";
 
 describe("Eisenhower Matrix API", () => {
     const server = express();
@@ -16,7 +17,7 @@ describe("Eisenhower Matrix API", () => {
         const module = await Test.createTestingModule({
             modules: [MatrixApi],
         })
-        .compile();
+            .compile();
 
         const app = module.createNestApplication(server);
         await app.init();
@@ -28,7 +29,15 @@ describe("Eisenhower Matrix API", () => {
 
         expect(response.status).toBe(200);
 
-        expect(response.body).toEqual(Empty(1));
+        EmptyMatrix(1);
+        expect(response.body)
+            .toEqual({
+                delegate: [],
+                doFirst: [],
+                doNotDo: [],
+                id: 1,
+                schedule: [],
+            });
     });
 
     it("adds task to the matrix", async () => {
@@ -43,7 +52,14 @@ describe("Eisenhower Matrix API", () => {
         const matrixResponse = await request(server)
             .get("/matrix");
 
-        expect(matrixResponse.body).toEqual(new Matrix(1, [task], [], [], []));
+        expect(matrixResponse.body)
+            .toEqual({
+                delegate: [],
+                doFirst: [task],
+                doNotDo: [],
+                id: 1,
+                schedule: [],
+            });
     });
 
     it("clears the matrix", async () => {
@@ -55,6 +71,13 @@ describe("Eisenhower Matrix API", () => {
         const matrixResponse = await request(server)
             .get("/matrix");
 
-        expect(matrixResponse.body).toEqual(Empty(1));
+        expect(matrixResponse.body)
+            .toEqual({
+                delegate: [],
+                doFirst: [],
+                doNotDo: [],
+                id: 1,
+                schedule: [],
+            });
     });
 });

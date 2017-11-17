@@ -6,7 +6,7 @@ export class AddTaskAction {
     constructor(private readonly adder: AddTask) {}
 
     @Post()
-    public handle(@Body() task) {
-        return this.adder.handle(1 as MatrixId, task as Task);
+    public handle(@Body() task: Task): void {
+        this.adder.handle(1 as MatrixId, task);
     }
 }
