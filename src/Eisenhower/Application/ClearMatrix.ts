@@ -4,11 +4,14 @@ import { MatrixRepository } from "../Model/MatrixRepository";
 
 @Component()
 export class ClearMatrix {
-    constructor(private repository: MatrixRepository) {}
+    constructor(private repository: MatrixRepository) {
+    }
 
     public handle(id: MatrixId): void {
-        this.repository.store(
-            this.repository.get(id).clear(),
-        );
+        this
+            .repository
+            .get(id)
+            .map((m) => m.clear())
+            .map((m) => this.repository.store(m));
     }
 }

@@ -5,11 +5,16 @@ import { Task } from "../Model/Task";
 
 @Component()
 export class AddTask {
-    constructor(private repository: MatrixRepository) {}
+    constructor(private repository: MatrixRepository) {
+    }
 
     public handle(id: MatrixId, task: Task): void {
-        this.repository.store(
-            this.repository.get(id).add(task),
-        );
+
+        this
+            .repository
+            .get(id)
+            .map((m) => m.add(task))
+            .map((m) => this.repository.store(m))
+        ;
     }
 }

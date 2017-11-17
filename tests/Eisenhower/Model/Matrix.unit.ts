@@ -2,7 +2,7 @@ import { Empty } from "../../../src/Eisenhower/Model/Matrix";
 import { Task } from "../../../src/Eisenhower/Model/Task";
 
 describe("An Eisenhower matrix", () => {
-    const empty = Empty();
+    const empty = Empty(1);
     const importantAndUrgent = new Task("Important and urgent", true, true);
     const importantButNotUrgent = new Task("Important but not urgent", true, false);
     const notImportantButUrgent = new Task("Not important but urgent", false, true);

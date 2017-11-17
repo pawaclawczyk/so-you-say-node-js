@@ -28,7 +28,7 @@ describe("Eisenhower Matrix API", () => {
 
         expect(response.status).toBe(200);
 
-        expect(response.body).toEqual(Empty());
+        expect(response.body).toEqual(Empty(1));
     });
 
     it("adds task to the matrix", async () => {
@@ -43,7 +43,7 @@ describe("Eisenhower Matrix API", () => {
         const matrixResponse = await request(server)
             .get("/matrix");
 
-        expect(matrixResponse.body).toEqual(new Matrix([task], [], [], []));
+        expect(matrixResponse.body).toEqual(new Matrix(1, [task], [], [], []));
     });
 
     it("clears the matrix", async () => {
@@ -55,6 +55,6 @@ describe("Eisenhower Matrix API", () => {
         const matrixResponse = await request(server)
             .get("/matrix");
 
-        expect(matrixResponse.body).toEqual(Empty());
+        expect(matrixResponse.body).toEqual(Empty(1));
     });
 });
