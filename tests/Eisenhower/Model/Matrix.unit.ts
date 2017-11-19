@@ -1,7 +1,7 @@
-import { EmptyMatrix } from "../../../src/Eisenhower/Model/Matrix";
-import { Task } from "../../../src/Eisenhower/Model/Task";
+import { EmptyMatrix } from "../../../src/eisenhower/model/Matrix";
+import { Task } from "../../../src/eisenhower/model/Task";
 
-describe("An Eisenhower matrix", () => {
+describe("An eisenhower matrix", () => {
     const empty = EmptyMatrix(1);
     const importantAndUrgent = new Task("Important and urgent", true, true);
     const importantButNotUrgent = new Task("Important but not urgent", true, false);

@@ -1,9 +1,9 @@
 import { NestFactory } from "@nestjs/core";
 import * as bodyParser from "body-parser";
-import { Api } from "./Eisenhower/UI/Api";
+import { ApplicationModule } from "./ApplicationModule";
 
 const bootstrap = async () => {
-    const app = await NestFactory.create(Api);
+    const app = await NestFactory.create(ApplicationModule);
 
     app.use(bodyParser.json());
 
