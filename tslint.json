@@ -19,7 +19,8 @@
             "check-typecast",
             "check-type-operator",
             "check-preblock"
-        ]
+        ],
+        "object-literal-sort-keys": false
     },
     "rulesDirectory": []
 }

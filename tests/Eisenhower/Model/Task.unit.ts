@@ -1,4 +1,4 @@
-import { Task } from "../../../src/Eisenhower/Model/Task";
+import { Task } from "../../../src/eisenhower/model/Task";
 
 describe('An important but not urgent task', () => {
     const t = new Task("Learn how to write good tests", true, false);

@@ -1,8 +1,8 @@
-import { Empty } from "../../../src/Eisenhower/Model/Matrix";
-import { Task } from "../../../src/Eisenhower/Model/Task";
+import { EmptyMatrix } from "../../../src/eisenhower/model/Matrix";
+import { Task } from "../../../src/eisenhower/model/Task";
 
-describe("An Eisenhower matrix", () => {
-    const empty = Empty();
+describe("An eisenhower matrix", () => {
+    const empty = EmptyMatrix(1);
     const importantAndUrgent = new Task("Important and urgent", true, true);
     const importantButNotUrgent = new Task("Important but not urgent", true, false);
     const notImportantButUrgent = new Task("Not important but urgent", false, true);
@@ -36,24 +36,24 @@ describe("An Eisenhower matrix", () => {
     it("enqueues important and urgent tasks as \"do first\"", () => {
         const matrix = empty.add(importantAndUrgent);
 
-        expect(matrix.doFirst.length).toBe(1);
+        expect(matrix.doFirst.size).toBe(1);
     });
 
     it("enqueues important but not urgent tasks as \"schedule\"", () => {
         const matrix = empty.add(importantButNotUrgent);
 
-        expect(matrix.schedule.length).toBe(1);
+        expect(matrix.schedule.size).toBe(1);
     });
 
     it("enqueues not important but urgent tasks as \"delegate\"", () => {
         const matrix = empty.add(notImportantButUrgent);
 
-        expect(matrix.delegate.length).toBe(1);
+        expect(matrix.delegate.size).toBe(1);
     });
 
     it("enqueues not important and not urgent tasks as \"do not do\"", () => {
         const matrix = empty.add(notImportantAndNotUrgent);
 
-        expect(matrix.doNotDo.length).toBe(1);
+        expect(matrix.doNotDo.size).toBe(1);
     });
 });
