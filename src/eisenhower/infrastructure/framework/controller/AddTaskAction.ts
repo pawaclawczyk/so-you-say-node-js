@@ -1,15 +1,21 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject, Param, Post } from '@nestjs/common';
+import { HttpException } from '@nestjs/core';
+import { Maybe } from 'monet';
 import { ParseIntPipe } from '../../../../common/infrastructure/framework/PareIntPipe';
-import { AddTask } from '../../../application/AddTask';
-import { MatrixId } from '../../../model/MatrixId';
-import { Task } from '../../../model/Task';
+import { Matrix, MatrixId } from '../../../model/matrix.model';
+import { TaskName } from '../../../model/task.model';
+import services from '../services';
 
 @Controller()
 export class AddTaskAction {
-    constructor(private readonly adder: AddTask) {}
+    constructor(@Inject(services.ADD_TASK) private readonly addTask: (id: MatrixId, name: TaskName) => Maybe<Matrix>) {}
 
     @Post('/matrix/:id/tasks')
-    public handle(@Param('id', new ParseIntPipe()) id: MatrixId, @Body() task: Task): void {
-        this.adder.handle(id, task);
+    public handle(@Param('id', new ParseIntPipe()) id: MatrixId, @Body() task: { name: TaskName }): void {
+        this
+            .addTask(id, task.name)
+            .orElseRun(() => {
+                throw new HttpException('Matrix not found', HttpStatus.NOT_FOUND);
+            });
     }
 }

@@ -15,7 +15,7 @@ export interface Matrix {
 
 export type MatrixConstructor = (id: MatrixId) => Matrix;
 
-export type NextTaskId = (matrix: Matrix) => TaskId;
+type NextTaskId = (matrix: Matrix) => TaskId;
 
 type AddTask = (matrix: Matrix, task: WaitingTask) => Matrix;
 
@@ -29,7 +29,7 @@ export type ClearTasks = (matrix: Matrix) => Matrix;
 
 export const Matrix: MatrixConstructor = (id: MatrixId) => ({ id, tasks: List() });
 
-export const nextTaskId: NextTaskId = (matrix: Matrix) => matrix.tasks.size() + 1;
+const nextTaskId: NextTaskId = (matrix: Matrix) => matrix.tasks.size() + 1;
 
 const addTask: AddTask = (matrix: Matrix, task: WaitingTask) => ({
     id: matrix.id,
