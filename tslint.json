@@ -7,6 +7,8 @@
     "rules": {
         "interface-name": [true, "never-prefix"],
         "no-unused-variable": true,
+        "object-literal-sort-keys": false,
+        "quotemark": [true, "single"],
         "whitespace": [
             true,
             "check-branch",
@@ -19,8 +21,7 @@
             "check-typecast",
             "check-type-operator",
             "check-preblock"
-        ],
-        "object-literal-sort-keys": false
+        ]
     },
     "rulesDirectory": []
 }

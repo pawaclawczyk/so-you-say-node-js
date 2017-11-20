@@ -1,6 +1,6 @@
-import { Map } from "immutable";
-import { Maybe } from "monet";
-import { Identifiable, Repository } from "../../model/repository/repository";
+import { Map } from 'immutable';
+import { Maybe } from 'monet';
+import { Identifiable, Repository } from '../../model/repository/repository';
 
 export class InMemoryRepository<ID, T extends Identifiable<ID>> implements Repository<ID, T> {
     private xs: Map<ID, T>;

@@ -1,5 +1,5 @@
-import { ArgumentMetadata, HttpStatus, Pipe, PipeTransform } from "@nestjs/common";
-import { HttpException } from "@nestjs/core";
+import { ArgumentMetadata, HttpStatus, Pipe, PipeTransform } from '@nestjs/common';
+import { HttpException } from '@nestjs/core';
 
 @Pipe()
 export class ParseIntPipe implements PipeTransform<string> {
@@ -7,7 +7,7 @@ export class ParseIntPipe implements PipeTransform<string> {
         const val = parseInt(value, 10);
 
         if (isNaN(val)) {
-            throw new HttpException("Validation failed", HttpStatus.BAD_REQUEST);
+            throw new HttpException('Validation failed', HttpStatus.BAD_REQUEST);
         }
 
         return val;
