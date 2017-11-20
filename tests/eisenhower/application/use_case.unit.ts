@@ -1,25 +1,30 @@
 import { InMemoryRepository } from '../../../src/common/infrastructure/repository/InMemoryRepository';
+import { Repository } from '../../../src/common/model/repository/repository';
 import { addTask, clearTasks, createMatrix, finishTask } from '../../../src/eisenhower/application/use_case';
 import { Matrix, MatrixId } from '../../../src/eisenhower/model/matrix.model';
 import { createTask, TaskKinds } from '../../../src/eisenhower/model/task.model';
 
 describe('An Eisenhower application', () => {
+    const MATRIX_ID = 1;
+
+    let repository: Repository<MatrixId, Matrix>;
+
+    beforeEach(() => {
+        repository = new InMemoryRepository<MatrixId, Matrix>();
+    });
+
     it('creates matrix with id and empty task list', () => {
-        const repository = new InMemoryRepository<MatrixId, Matrix>();
+        const matrix = createMatrix(repository)(MATRIX_ID).just();
 
-        const matrix = createMatrix(repository, 1);
-
-        expect(matrix.id).toBe(1);
+        expect(matrix.id).toBe(MATRIX_ID);
         expect(matrix.tasks.size()).toBe(0);
     });
 
     it('adds task to matrix', () => {
-        const repository = new InMemoryRepository<MatrixId, Matrix>();
+        createMatrix(repository)(MATRIX_ID);
 
-        createMatrix(repository, 1);
-
-        addTask(repository, 1, 'first task');
-        const matrix = addTask(repository, 1, 'second task');
+        addTask(repository)(MATRIX_ID, 'first task');
+        const matrix = addTask(repository)(MATRIX_ID, 'second task').just();
 
         expect(matrix.tasks.size()).toEqual(2);
         expect(matrix.tasks.head()).toEqual(createTask('second task', 2));
@@ -27,14 +32,12 @@ describe('An Eisenhower application', () => {
     });
 
     it('finishes tasks', () => {
-        const repository = new InMemoryRepository<MatrixId, Matrix>();
+        createMatrix(repository)(MATRIX_ID);
 
-        createMatrix(repository, 1);
+        addTask(repository)(MATRIX_ID, 'first task');
+        addTask(repository)(MATRIX_ID, 'second task');
 
-        addTask(repository, 1, 'first task');
-        addTask(repository, 1, 'second task');
-
-        const matrix = finishTask(repository, 1, 1);
+        const matrix = finishTask(repository)(MATRIX_ID, 1).just();
 
         expect(matrix.tasks.size()).toEqual(2);
         expect(matrix.tasks.head().kind).toEqual(TaskKinds.WaitingTask);
@@ -42,14 +45,12 @@ describe('An Eisenhower application', () => {
     });
 
     it('removes all tasks', () => {
-        const repository = new InMemoryRepository<MatrixId, Matrix>();
+        createMatrix(repository)(MATRIX_ID);
 
-        createMatrix(repository, 1);
+        addTask(repository)(MATRIX_ID, 'first task');
+        addTask(repository)(MATRIX_ID, 'second task');
 
-        addTask(repository, 1, 'first task');
-        addTask(repository, 1, 'second task');
-
-        const matrix = clearTasks(repository, 1);
+        const matrix = clearTasks(repository)(MATRIX_ID).just();
 
         expect(matrix.tasks.size()).toEqual(0);
     });

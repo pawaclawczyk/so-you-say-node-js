@@ -1,48 +1,55 @@
-import { Repository } from '../../common/model/repository/repository';
+import { Maybe } from 'monet';
+import { __ } from 'ramda';
+import { getFromRepository, Repository, storeInRepository } from '../../common/model/repository/repository';
 import {
     createAndAddTask, finishTask as finishTaskInMatrix, Matrix, MatrixId, removeAllTasks,
 } from '../model/matrix.model';
 import { TaskId, TaskName } from '../model/task.model';
 
-export type CreateMatrix = (repository: Repository<MatrixId, Matrix>, id: MatrixId) => Matrix;
-export type AddTask = (repository: Repository<MatrixId, Matrix>, id: MatrixId, name: TaskName) => Matrix;
-export type FinishTask = (repository: Repository<MatrixId, Matrix>, id: MatrixId, taskId: TaskId) => Matrix;
-export type ClearTasks = (repository: Repository<MatrixId, Matrix>, id: MatrixId) => Matrix;
+export type CreateMatrix =
+    (repository: Repository<MatrixId, Matrix>) =>
+        (id: MatrixId) =>
+            Maybe<Matrix>;
 
-export const createMatrix: CreateMatrix = (repository, id) => {
-    const matrix = Matrix(id);
+export type AddTask =
+    (repository: Repository<MatrixId, Matrix>) =>
+        (id: MatrixId, name: TaskName) =>
+            Maybe<Matrix>;
 
-    repository.store(matrix);
+export type FinishTask =
+    (repository: Repository<MatrixId, Matrix>) =>
+        (id: MatrixId, taskId: TaskId) =>
+            Maybe<Matrix>;
 
-    return matrix;
-};
+export type ClearTasks =
+    (repository: Repository<MatrixId, Matrix>) =>
+        (id: MatrixId) =>
+            Maybe<Matrix>;
 
-export const addTask: AddTask = (repository, id, name) => {
-    const matrix = repository.get(id);
+export const createMatrix: CreateMatrix =
+    (repository) =>
+        (id) =>
+            Maybe.Just(id)
+                .map(Matrix)
+                .flatMap(storeInRepository(repository));
 
-    const modifiedMatrix = createAndAddTask(matrix.just(), name);
+export const addTask: AddTask =
+    (repository) =>
+        (id, name) =>
+            getFromRepository(repository)(id)
+                .map(createAndAddTask(__, name))
+                .flatMap(storeInRepository(repository));
 
-    repository.store(modifiedMatrix);
+export const finishTask: FinishTask =
+    (repository) =>
+        (id, taskId) =>
+            getFromRepository(repository)(id)
+                .map(finishTaskInMatrix(__, taskId))
+                .flatMap(storeInRepository(repository));
 
-    return modifiedMatrix;
-};
-
-export const finishTask: FinishTask = (repository, id, taskId) => {
-    const matrix = repository.get(id);
-
-    const modifiedMatrix = finishTaskInMatrix(matrix.just(), taskId);
-
-    repository.store(modifiedMatrix);
-
-    return modifiedMatrix;
-};
-
-export const clearTasks: ClearTasks = (repository, id) => {
-    const matrix = repository.get(id);
-
-    const modifiedMatrix = removeAllTasks(matrix.just());
-
-    repository.store(modifiedMatrix);
-
-    return modifiedMatrix;
-};
+export const clearTasks: ClearTasks =
+    (repository) =>
+        (id) =>
+            getFromRepository(repository)(id)
+                .map(removeAllTasks)
+                .flatMap(storeInRepository(repository));

@@ -9,11 +9,13 @@ export class InMemoryRepository<ID, T extends Identifiable<ID>> implements Repos
         this.xs = Map();
     }
 
-    public get(id: ID) {
+    public get(id: ID): Maybe<T> {
         return Maybe.fromNull(this.xs.get(id, undefined));
     }
 
-    public store(x: T) {
+    public store(x: T): Maybe<T> {
         this.xs = this.xs.set(x.id, x);
+
+        return Maybe.Just(x);
     }
 }

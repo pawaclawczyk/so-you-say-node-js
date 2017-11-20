@@ -1,4 +1,6 @@
 import { List } from 'monet';
+import * as R from 'ramda';
+import { CurriedFunction2 } from 'ramda';
 import {
     createTask, finishTask as finishSingleTask, TaskId, TaskList, TaskName,
     WaitingTask,
@@ -14,10 +16,14 @@ export interface Matrix {
 export type MatrixConstructor = (id: MatrixId) => Matrix;
 
 export type NextTaskId = (matrix: Matrix) => TaskId;
-export type AddTask = (matrix: Matrix, task: WaitingTask) => Matrix;
-export type CreateAndAddTask = (matrix: Matrix, name: TaskName) => Matrix;
 
-export type FinishTask = (matrix: Matrix, taskId: TaskId) => Matrix;
+type AddTask = (matrix: Matrix, task: WaitingTask) => Matrix;
+
+// Matrix => TaskName => Matrix
+export type CreateAndAddTask = CurriedFunction2<Matrix, TaskName, Matrix>;
+
+// Matrix => TaskId => Matrix
+export type FinishTask = CurriedFunction2<Matrix, TaskId, Matrix>;
 
 export type ClearTasks = (matrix: Matrix) => Matrix;
 
@@ -30,14 +36,17 @@ const addTask: AddTask = (matrix: Matrix, task: WaitingTask) => ({
     tasks: matrix.tasks.cons(task),
 });
 
-export const createAndAddTask: CreateAndAddTask = (matrix: Matrix, name: TaskName) =>
-    addTask(matrix, createTask(name, nextTaskId(matrix)));
+export const createAndAddTask: CreateAndAddTask =
+    R.curry((matrix: Matrix, name: TaskName) => addTask(matrix, createTask(name, nextTaskId(matrix))));
 
-export const finishTask: FinishTask = (matrix, id) => ({
-    id: matrix.id,
-    tasks: matrix
-        .tasks
-        .map((task) => task.id === id ? finishSingleTask(task) : task),
-});
+export const finishTask: FinishTask =
+    R.curry(
+        (matrix, id) => ({
+            id: matrix.id,
+            tasks: matrix
+                .tasks
+                .map((task) => task.id === id ? finishSingleTask(task) : task),
+        }),
+    );
 
 export const removeAllTasks: ClearTasks = (matrix) => Matrix(matrix.id);
