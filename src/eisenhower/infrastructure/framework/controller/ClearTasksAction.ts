@@ -1,6 +1,7 @@
-import { Controller, Delete, HttpCode, HttpStatus, Inject, Param } from '@nestjs/common';
-import { HttpException } from '@nestjs/core';
+import { Controller, Delete, HttpCode, Inject, Param } from '@nestjs/common';
 import { Maybe } from 'monet';
+import { identity } from 'ramda';
+import { notFound } from '../../../../common/infrastructure/framework/controller/helper';
 import { ParseIntPipe } from '../../../../common/infrastructure/framework/PareIntPipe';
 import { Matrix, MatrixId } from '../../../model/matrix.model';
 import services from '../services';
@@ -12,10 +13,6 @@ export class ClearTasksAction {
     @Delete('/matrix/:id/tasks')
     @HttpCode(204)
     public handle(@Param('id', new ParseIntPipe()) id: MatrixId): void {
-        this
-            .clearTasks(id)
-            .orElseRun(() => {
-                throw new HttpException('Matrix not found', HttpStatus.NOT_FOUND);
-            });
+        this.clearTasks(id).cata(notFound(id), identity);
     }
 }

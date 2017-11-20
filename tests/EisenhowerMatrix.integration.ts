@@ -93,4 +93,33 @@ describe('eisenhower Matrix API', () => {
         expect(response.body.id).toEqual(MATRIX_ID);
         expect(response.body.tasks).toEqual([]);
     });
+
+    it('throws not found http error', async () => {
+        const NOT_EXISTING_MATRIX_ID = 0;
+
+        const error = {
+            message: `Matrix with id = ${ NOT_EXISTING_MATRIX_ID } not found`,
+            statusCode: HttpStatus.NOT_FOUND,
+        };
+
+        let response: Response;
+        response = await request(server)
+            .get(`/matrix/${ NOT_EXISTING_MATRIX_ID }`);
+
+        expect(response.status).toBe(HttpStatus.NOT_FOUND);
+        expect(response.body).toEqual(error);
+
+        response = await request(server)
+            .post(`/matrix/${ NOT_EXISTING_MATRIX_ID }/tasks`)
+            .send({});
+
+        expect(response.status).toBe(HttpStatus.NOT_FOUND);
+        expect(response.body).toEqual(error);
+
+        response = await request(server)
+            .delete(`/matrix/${ NOT_EXISTING_MATRIX_ID }/tasks`);
+
+        expect(response.status).toBe(HttpStatus.NOT_FOUND);
+        expect(response.body).toEqual(error);
+    });
 });

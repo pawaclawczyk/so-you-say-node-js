@@ -1,6 +1,7 @@
-import { Body, Controller, HttpStatus, Inject, Param, Post } from '@nestjs/common';
-import { HttpException } from '@nestjs/core';
+import { Body, Controller, Inject, Param, Post } from '@nestjs/common';
 import { Maybe } from 'monet';
+import { identity } from 'ramda';
+import { notFound } from '../../../../common/infrastructure/framework/controller/helper';
 import { ParseIntPipe } from '../../../../common/infrastructure/framework/PareIntPipe';
 import { Matrix, MatrixId } from '../../../model/matrix.model';
 import { TaskName } from '../../../model/task.model';
@@ -12,10 +13,6 @@ export class AddTaskAction {
 
     @Post('/matrix/:id/tasks')
     public handle(@Param('id', new ParseIntPipe()) id: MatrixId, @Body() task: { name: TaskName }): void {
-        this
-            .addTask(id, task.name)
-            .orElseRun(() => {
-                throw new HttpException('Matrix not found', HttpStatus.NOT_FOUND);
-            });
+        this.addTask(id, task.name).cata(notFound(id), identity);
     }
 }

@@ -3,21 +3,25 @@ import { getFromRepository, Repository } from '../../common/model/repository/rep
 import { Matrix, MatrixId } from '../model/matrix.model';
 import { Task } from '../model/task.model';
 
-export interface MatrixView {
+interface MatrixView {
     id: MatrixId;
     tasks: Task[];
 }
 
-export const matrixView = (matrix: Matrix): MatrixView => ({
+type GetMatrix = (id: MatrixId) => Maybe<MatrixView>;
+
+const matrixView = (matrix: Matrix): MatrixView => ({
     id: matrix.id,
     tasks: matrix.tasks.toArray(),
 });
 
-export type GetMatrix =
-    (repository: Repository<MatrixId, Matrix>) =>
-        (id: MatrixId) => Maybe<MatrixView>;
-
-export const getMatrix: GetMatrix =
+const getMatrix: (repository: Repository<MatrixId, Matrix>) => GetMatrix =
     (repository) =>
         (id) => getFromRepository(repository)(id)
             .map(matrixView);
+
+export {
+    MatrixView,
+    GetMatrix,
+    getMatrix,
+};
