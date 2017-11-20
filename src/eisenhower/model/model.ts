@@ -1,4 +1,4 @@
-import { List } from "immutable";
+import { List } from 'immutable';
 
 export type TaskId = number;
 export type TaskName = string;

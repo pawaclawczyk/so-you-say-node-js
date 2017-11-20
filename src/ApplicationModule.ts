@@ -1,5 +1,5 @@
-import { Module } from "@nestjs/common";
-import { EisenhowerModule } from "./eisenhower/infrastructure/framework/EisenhowerModule";
+import { Module } from '@nestjs/common';
+import { EisenhowerModule } from './eisenhower/infrastructure/framework/EisenhowerModule';
 
 @Module({
     modules: [

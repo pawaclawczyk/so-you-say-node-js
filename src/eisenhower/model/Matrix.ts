@@ -1,6 +1,6 @@
-import { List } from "immutable";
-import { MatrixId } from "./MatrixId";
-import { Task } from "./Task";
+import { List } from 'immutable';
+import { MatrixId } from './MatrixId';
+import { Task } from './Task';
 
 export class Matrix {
     constructor(

@@ -1,4 +1,4 @@
-import { Maybe } from "monet";
+import { Maybe } from 'monet';
 
 export type RepositoryGet<ID, T> = (id: ID) => Maybe<T>;
 export type RepositoryStory<T> = (x: T) => void;

@@ -1,3 +1,3 @@
 export default {
-    MATRIX_REPOSITORY: "matrix_repository",
+    MATRIX_REPOSITORY: 'matrix_repository',
 };
