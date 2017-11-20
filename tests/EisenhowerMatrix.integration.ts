@@ -3,14 +3,12 @@ import { Test } from '@nestjs/testing';
 import { TestingModule } from '@nestjs/testing/testing-module';
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import { List } from 'monet';
 import * as request from 'supertest';
 import { Response } from 'supertest';
 import { Repository, storeInRepository } from '../src/common/model/repository/repository';
 import { EisenhowerModule } from '../src/eisenhower/infrastructure/framework/EisenhowerModule';
 import services from '../src/eisenhower/infrastructure/framework/services';
-import { Matrix } from '../src/eisenhower/model/matrix.model';
-import { MatrixId } from '../src/eisenhower/model/MatrixId';
+import { Matrix, MatrixId } from '../src/eisenhower/model/matrix.model';
 import { TaskKinds } from '../src/eisenhower/model/task.model';
 
 describe('eisenhower Matrix API', () => {
