@@ -1,0 +1,25 @@
+{
+  "name": "Task",
+  "table": {
+    "name": "tasks"
+  },
+  "columns": {
+    "id": {
+      "primary": true,
+      "type": "integer"
+    },
+    "kind": {
+      "type": "varchar",
+      "length": 20
+    },
+    "name": {
+      "type": "varchar",
+      "length": 100
+    },
+    "done": {
+      "type": "tinyint",
+      "length": 1,
+      "default": 0
+    }
+  }
+}

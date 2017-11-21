@@ -1,0 +1,19 @@
+{
+  "type": "mariadb",
+  "host": "localhost",
+  "port": 3307,
+  "username": "root",
+  "password": "default",
+  "database": "test",
+  "synchronize": true,
+  "logging": false,
+  "entitySchemas": [
+    "src/eisenhower/infrastructure/orm/schemes/*.json"
+  ],
+  "migrations": [
+    "dist/src/eisenhower/infrastructure/orm/migrations/*.js"
+  ],
+  "cli": {
+    "migrationsDir": "src/eisenhower/infrastructure/orm/migrations"
+  }
+}
