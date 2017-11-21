@@ -1,20 +1,9 @@
 import { Maybe } from 'monet';
 import { __ } from 'ramda';
 import { createConnection } from 'typeorm';
-import { schemas } from './eisenhower/infrastructure/orm/scheme';
 import { createAndAddTask, finishTask, Matrix } from './eisenhower/model/matrix.model';
 
-createConnection({
-    type: 'mariadb',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '',
-    database: 'test',
-    entitySchemas: schemas,
-    synchronize: true,
-    logging: false,
-})
+createConnection()
     .then(async (connection) => {
         const matrix = Maybe.Just(1)
             .map(Matrix)

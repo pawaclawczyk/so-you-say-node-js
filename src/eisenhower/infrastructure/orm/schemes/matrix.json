@@ -1,0 +1,17 @@
+{
+  "name": "Matrix",
+  "columns": {
+    "id": {
+      "primary": true,
+      "type": "integer"
+    }
+  },
+  "relations": {
+    "tasks": {
+      "target": "Task",
+      "type": "many-to-many",
+      "joinTable": true,
+      "cascadeAll": true
+    }
+  }
+}
