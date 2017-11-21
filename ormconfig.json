@@ -12,5 +12,8 @@
   ],
   "migrations": [
     "dist/src/eisenhower/infrastructure/orm/migrations/*.js"
-  ]
+  ],
+  "cli": {
+    "migrationsDir": "src/eisenhower/infrastructure/orm/migrations"
+  }
 }

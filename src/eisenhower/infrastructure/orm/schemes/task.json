@@ -1,5 +1,8 @@
 {
   "name": "Task",
+  "table": {
+    "name": "tasks"
+  },
   "columns": {
     "id": {
       "primary": true,

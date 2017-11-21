@@ -1,5 +1,8 @@
 {
   "name": "Matrix",
+  "table": {
+    "name": "matrices"
+  },
   "columns": {
     "id": {
       "primary": true,
@@ -10,7 +13,9 @@
     "tasks": {
       "target": "Task",
       "type": "many-to-many",
-      "joinTable": true,
+      "joinTable": {
+        "name": "matrix_tasks"
+      },
       "cascadeAll": true
     }
   }
