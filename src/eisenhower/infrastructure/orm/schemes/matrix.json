@@ -14,7 +14,19 @@
       "target": "Task",
       "type": "many-to-many",
       "joinTable": {
-        "name": "matrix_tasks"
+        "name": "matrix_tasks",
+        "joinColumns": [
+          {
+            "name": "matrix_id",
+            "referencedColumnName": "id"
+          }
+        ],
+        "inverseJoinColumns": [
+          {
+            "name": "task_id",
+            "referencedColumnName": "id"
+          }
+        ]
       },
       "cascadeAll": true
     }

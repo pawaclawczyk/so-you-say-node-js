@@ -21,11 +21,11 @@ createConnection()
 
         const res0 = await repository.save(matrix);
 
-        console.log('res0: ' + res0);
+        console.log(res0);
 
-        const res1 = await  repository.findOneById(1);
+        const res1 = await repository.findOne({ where: { id: 1 }, relations: ['tasks'] });
 
-        console.log('res1: ' + res1);
+        console.log(res1);
 
         connection.close();
     })
