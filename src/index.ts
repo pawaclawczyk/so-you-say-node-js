@@ -1,7 +1,7 @@
 import { Maybe } from 'monet';
-import { __ } from 'ramda';
-import { createConnection } from 'typeorm';
-import { createAndAddTask, finishTask, Matrix } from './eisenhower/model/matrix.model';
+import { __, compose, curry } from 'ramda';
+import { Connection, createConnection, FindOneOptions, Repository } from 'typeorm';
+import { createAndAddTask, finishTask, Matrix, MatrixId } from './eisenhower/model/matrix.model';
 
 const matrix = Maybe.Just(1)
     .map(Matrix)
@@ -15,18 +15,27 @@ const matrix = Maybe.Just(1)
     }))
     .just();
 
-createConnection()
-    .then(async (connection) => {
-        const repository = connection.manager.getRepository('Matrix');
+const opts = { relations: ['tasks'] };
 
-        const res0 = await repository.save(matrix);
+const conn = createConnection();
 
-        console.log(res0);
+const mapP = <A, B>(fn: (x: A) => B) => (p: Promise<A>): Promise<B> => p.then(fn);
 
-        const res1 = await repository.findOne({ where: { id: 1 }, relations: ['tasks'] });
+const getRepo = curry(
+    (e: string, c: Connection) => c.manager.getRepository(e),
+);
 
-        console.log(res1);
+const get = curry(
+    (id: MatrixId, opts: FindOneOptions<{}>, r: Repository<{}>) => r.findOne(id, opts)
+);
 
-        connection.close();
-    })
-    .catch((error) => console.log(error));
+const close = async () => (await conn).close();
+
+const app = compose(
+    mapP(close),
+    mapP((v) => { console.log(v); return v; }),
+    mapP(get(1, opts as FindOneOptions<{}>)),
+    mapP(getRepo('Matrix')),
+);
+
+app(conn);

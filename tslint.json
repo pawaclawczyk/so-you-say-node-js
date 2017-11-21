@@ -22,7 +22,9 @@
             "check-type-operator",
             "check-preblock"
         ],
-        "no-console": false
+        "no-console": false,
+        "trailing-comma": false,
+        "no-shadowed-variable": false
     },
     "rulesDirectory": []
 }
