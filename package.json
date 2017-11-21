@@ -16,7 +16,9 @@
     "lint": "tslint --project tsconfig.json --config tslint.json 'src/**/*.{ts,tsx}'",
     "lint-fix": "yarn run lint --fix",
     "pretest": "yarn run lint",
-    "test": "PORT=3010 jest --forceExit"
+    "test": "PORT=3010 jest --forceExit",
+    "db-start": "docker run -d --rm --name sysnjs -e MYSQL_ROOT_PASSWORD=toor -e MYSQL_DATABASE=sysnjs -p 3307:3306 mariadb",
+    "db-stop": "docker stop sysnjs"
   },
   "dependencies": {
     "@nestjs/common": "^4.2.2",
