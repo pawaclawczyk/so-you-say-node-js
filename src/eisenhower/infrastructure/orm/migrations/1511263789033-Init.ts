@@ -37,8 +37,8 @@ export class Init1511263789033 implements MigrationInterface {
             'ALTER TABLE `matrix_tasks` ' +
             'ADD CONSTRAINT `fk_d48d8e6e6875cad6e22abc54eeb` ' +
             'FOREIGN KEY (`task_id`) ' +
-            'REFERENCES `tasks`(`id`)'
-        ;
+            'REFERENCES `tasks`(`id`)',
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {

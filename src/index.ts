@@ -23,7 +23,7 @@ createConnection()
 
         console.log(res0);
 
-        const res1 = await repository.findOne(1);
+        const res1 = await repository.findOne({ where: { id: 1 }, relations: ['tasks'] });
 
         console.log(res1);
 
