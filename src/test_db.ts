@@ -1,7 +1,7 @@
+import { Maybe, Validation } from 'monet';
+import { __ } from 'ramda';
 import * as Sequelize from 'sequelize';
-import { Maybe } from "monet";
-import { createAndAddTask, Matrix } from "./eisenhower/model/matrix.model";
-import { __ } from "ramda";
+import { createAndAddTask, Matrix } from './eisenhower/model/matrix.model';
 
 const sequelize = new Sequelize('test', 'root', '', {
     host: 'localhost',
@@ -31,24 +31,51 @@ const task = sequelize.define('Task', {
     },
 });
 
-matrix.hasMany(task);
+matrix.hasMany(task, {onDelete: 'cascade', hooks: true});
+task.belongsTo(matrix, {});
 
-// sequelize
-//     .authenticate()
-//     .then(() => {
-//         console.log('Connection has been established successfully.');
-//     })
-//     .catch((err) => {
-//         console.error('Unable to connect to the database:', err);
-//     });
-
-const m = Maybe.Just(1)
+const matrixExample = Maybe.Just(1)
     .map(Matrix)
     .map(createAndAddTask(__, 'a task'))
+    // .map((m) => ({
+    //     id: m.id,
+    //     tasks: m.tasks.toArray(),
+    // }))
     .just();
 
-const res0 = matrix.sync({force: true}).then(() => {
-    return matrix.create(m);
-});
+const run = async (done) => {
+    Validation
+        .point(await task.drop());
+    try {
+        await task.drop();
+        await matrix.drop();
 
-console.log(res0);
+        await matrix.sync({force: true});
+        await task.sync({force: true});
+
+    } catch (error) {
+        console.log('Sync error: ' + error);
+
+        sequelize.close();
+
+        return done();
+    }
+
+    // console.log(res0);
+
+    await matrix.create(matrixExample);
+
+    matrixExample.tasks.forEach(async (x) => {
+        await task.create(x);
+    });
+
+    // console.log(res1);
+
+    const res3 = await matrix.findById(1);
+
+    await sequelize.close();
+
+    done();
+};
+
+run(() => console.log('end'));

@@ -21,7 +21,8 @@
             "check-typecast",
             "check-type-operator",
             "check-preblock"
-        ]
+        ],
+        "no-console": [false]
     },
     "rulesDirectory": []
 }
