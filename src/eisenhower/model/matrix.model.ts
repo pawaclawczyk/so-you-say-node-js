@@ -1,52 +1,49 @@
-import { List } from 'monet';
-import * as R from 'ramda';
-import { CurriedFunction2 } from 'ramda';
-import {
-    createTask, finishTask as finishSingleTask, TaskId, TaskList, TaskName,
-    WaitingTask,
-} from './task.model';
+import { List, Maybe } from 'monet';
+import { createTask, finishTask, TaskId, TaskList, TaskName, WaitingTask, } from './task.model';
 
-export type MatrixId = number;
+type MatrixId = number;
 
-export interface Matrix {
+interface Matrix {
     id: MatrixId;
     tasks: TaskList;
 }
 
-export type MatrixConstructor = (id: MatrixId) => Matrix;
+type NextTaskId = (m: Matrix) => TaskId;
+type AddTask = (m: Matrix) => (t: WaitingTask) => Matrix;
 
-type NextTaskId = (matrix: Matrix) => TaskId;
+type MatrixConstructor = (id: MatrixId) => Matrix;
+type CreateTaskFromName = (n: TaskName) => (m: Matrix) => Matrix;
+type FinishTaskById = (id: TaskId) => (m: Matrix) => Matrix;
+type ClearTasks = (m: Matrix) => Matrix;
 
-type AddTask = (matrix: Matrix, task: WaitingTask) => Matrix;
+const nextId: NextTaskId = (matrix) => matrix.tasks.size() + 1;
 
-// Matrix => TaskName => Matrix
-export type CreateAndAddTask = CurriedFunction2<Matrix, TaskName, Matrix>;
-
-// Matrix => TaskId => Matrix
-export type FinishTask = CurriedFunction2<Matrix, TaskId, Matrix>;
-
-export type ClearTasks = (matrix: Matrix) => Matrix;
-
-export const Matrix: MatrixConstructor = (id: MatrixId) => ({ id, tasks: List() });
-
-const nextTaskId: NextTaskId = (matrix: Matrix) => matrix.tasks.size() + 1;
-
-const addTask: AddTask = (matrix: Matrix, task: WaitingTask) => ({
+const add: AddTask = (matrix) => (task) => ({
     id: matrix.id,
     tasks: matrix.tasks.cons(task),
 });
 
-export const createAndAddTask: CreateAndAddTask =
-    R.curry((matrix: Matrix, name: TaskName) => addTask(matrix, createTask(name, nextTaskId(matrix))));
+const Matrix: MatrixConstructor = (id) => ({ id, tasks: List() });
 
-export const finishTask: FinishTask =
-    R.curry(
-        (matrix, id) => ({
+const create: CreateTaskFromName = (name) => (matrix) => Maybe.Just(matrix)
+    .map(nextId)
+    .map(createTask(name))
+    .map(add(matrix))
+    .just();
+
+const finish: FinishTaskById = (id) => (matrix) => ({
             id: matrix.id,
             tasks: matrix
                 .tasks
-                .map((task) => task.id === id ? finishSingleTask(task) : task),
-        }),
-    );
+                .map((t) => t.id === id ? finishTask(t) : t),
+        });
 
-export const removeAllTasks: ClearTasks = (matrix) => Matrix(matrix.id);
+const clear: ClearTasks = (matrix) => Matrix(matrix.id);
+
+export {
+    MatrixId,
+    Matrix,
+    create,
+    finish,
+    clear,
+};

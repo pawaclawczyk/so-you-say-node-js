@@ -26,10 +26,10 @@ export type Task = WaitingTask | FinishedTask;
 
 export type TaskList = List<Task>;
 
-export type CreateTask = (name: TaskName, id: TaskId) => WaitingTask;
+export type CreateTask = (name: TaskName) => (id: TaskId) => WaitingTask;
 export type FinishTask = (task: Task) => FinishedTask;
 
-export const createTask: CreateTask = (name, id) => ({
+export const createTask: CreateTask = (name) => (id) => ({
     kind: TaskKinds.WaitingTask,
     id,
     name,

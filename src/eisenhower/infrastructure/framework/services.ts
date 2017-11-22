@@ -1,6 +1,8 @@
 export default {
-    GET_MATRIX: 'get_matrix',
-    ADD_TASK: 'add_task',
-    CLEAR_TASKS: 'clear_tasks',
-    MATRIX_REPOSITORY: 'matrix_repository',
+    REPOSITORY_GET: 'REPOSITORY_GET',
+    CREATE_MATRIX: 'CREATE_MATRIX',
+    GET_MATRIX: 'GET_MATRIX',
+    ADD_TASK: 'ADD_TASK',
+    CLEAR_TASKS: 'CLEAR_TASKS',
+    MATRIX_REPOSITORY: 'MATRIX_REPOSITORY',
 };

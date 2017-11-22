@@ -1,5 +1,5 @@
 import { Maybe } from 'monet';
-import { getFromRepository, Repository } from '../../common/model/repository/repository';
+import { RepositoryGet } from '../../common/model/repository/repository';
 import { Matrix, MatrixId } from '../model/matrix.model';
 import { Task } from '../model/task.model';
 
@@ -8,20 +8,17 @@ interface MatrixView {
     tasks: Task[];
 }
 
-type GetMatrix = (id: MatrixId) => Maybe<MatrixView>;
+type GetMatrixView = (id: MatrixId) => Maybe<MatrixView>;
 
-const matrixView = (matrix: Matrix): MatrixView => ({
+const MatrixView = (matrix: Matrix): MatrixView => ({
     id: matrix.id,
     tasks: matrix.tasks.toArray(),
 });
 
-const getMatrix: (repository: Repository<MatrixId, Matrix>) => GetMatrix =
-    (repository) =>
-        (id) => getFromRepository(repository)(id)
-            .map(matrixView);
+const GetMatrixView: (repositoryGet: RepositoryGet<MatrixId, Matrix>) => GetMatrixView =
+    (repositoryGet) => (id) => repositoryGet(id).map(MatrixView);
 
 export {
     MatrixView,
-    GetMatrix,
-    getMatrix,
+    GetMatrixView,
 };

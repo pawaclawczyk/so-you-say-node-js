@@ -1,34 +1,38 @@
 import { Module } from '@nestjs/common';
-import { InMemoryRepository } from '../../../common/infrastructure/repository/InMemoryRepository';
-import { Repository } from '../../../common/model/repository/repository';
-import { addTask, clearTasks } from '../../application/use_case';
-import { getMatrix } from '../../application/view';
+import { Map } from 'immutable';
+import { InMemoryGet, InMemoryStore } from '../../../common/infrastructure/repository/InMemoryRepository';
+import { RepositoryGet, RepositoryStore } from '../../../common/model/repository/repository';
+import { AddTask, ClearTasks, CreateMatrix } from '../../application/use_case';
+import { GetMatrixView } from '../../application/view';
 import { Matrix, MatrixId } from '../../model/matrix.model';
 import { AddTaskAction } from './controller/AddTaskAction';
 import { ClearTasksAction } from './controller/ClearTasksAction';
 import { GetMatrixAction } from './controller/GetMatrixAction';
 import services from './services';
 
-const InMemoryMatrixRepository: Repository<MatrixId, Matrix> = new InMemoryRepository<MatrixId, Matrix>();
+const matrices = Map<MatrixId, Matrix>().asMutable();
+
+const repositoryGet: RepositoryGet<MatrixId, Matrix> = InMemoryGet(matrices);
+const repositoryStore: RepositoryStore<MatrixId, Matrix> = InMemoryStore(matrices);
 
 @Module({
     components: [
         {
-            provide: services.MATRIX_REPOSITORY,
-            useValue: InMemoryMatrixRepository,
-        },
-        {
             provide: services.GET_MATRIX,
-            useValue: getMatrix(InMemoryMatrixRepository),
+            useValue: GetMatrixView(repositoryGet),
         },
         {
             provide: services.ADD_TASK,
-            useValue: addTask(InMemoryMatrixRepository),
+            useValue: AddTask(repositoryGet, repositoryStore),
         },
         {
             provide: services.CLEAR_TASKS,
-            useValue: clearTasks(InMemoryMatrixRepository),
+            useValue: ClearTasks(repositoryGet, repositoryStore),
         },
+        {
+            provide: services.CREATE_MATRIX,
+            useValue: CreateMatrix(repositoryStore),
+        }
     ],
     controllers: [
         GetMatrixAction,

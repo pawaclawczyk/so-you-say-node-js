@@ -5,10 +5,9 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as request from 'supertest';
 import { Response } from 'supertest';
-import { Repository, storeInRepository } from '../src/common/model/repository/repository';
+import { CreateMatrix } from '../src/eisenhower/application/use_case';
 import { EisenhowerModule } from '../src/eisenhower/infrastructure/framework/EisenhowerModule';
 import services from '../src/eisenhower/infrastructure/framework/services';
-import { Matrix, MatrixId } from '../src/eisenhower/model/matrix.model';
 import { TaskKinds } from '../src/eisenhower/model/task.model';
 
 describe('eisenhower Matrix API', () => {
@@ -23,10 +22,10 @@ describe('eisenhower Matrix API', () => {
             .createTestingModule({ modules: [EisenhowerModule] })
             .compile();
 
-        const repository: Repository<MatrixId, Matrix> =
-            module.select(EisenhowerModule).get(services.MATRIX_REPOSITORY);
+        const createMatrix: CreateMatrix =
+            module.select(EisenhowerModule).get(services.CREATE_MATRIX);
 
-        storeInRepository(repository)(Matrix(MATRIX_ID));
+        createMatrix(MATRIX_ID);
 
         const app = module.createNestApplication(server);
         await app.init();

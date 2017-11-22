@@ -1,9 +1,8 @@
-import { Maybe } from 'monet';
 import { createTask, finishTask, TaskKinds } from '../../../src/eisenhower/model/task.model';
 
 describe('A task', () => {
     it('is created from name and id as waiting task', () => {
-        const task = createTask('Some task', 123);
+        const task = createTask('Some task')(123);
 
         expect(task.kind).toEqual(TaskKinds.WaitingTask);
         expect(task.id).toEqual(123);
@@ -13,11 +12,10 @@ describe('A task', () => {
     });
 
     it('is finished', () => {
-        const task = Maybe.Just(createTask('Some task', 123))
-            .map(finishTask)
-            .just();
+        const task = createTask('Some task')(123);
+        const finished = finishTask(task);
 
-        expect(task.kind).toEqual(TaskKinds.FinishedTask);
-        expect(task.done).toBe(true);
+        expect(finished.kind).toEqual(TaskKinds.FinishedTask);
+        expect(finished.done).toBe(true);
     });
 });
