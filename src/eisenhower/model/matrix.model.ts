@@ -1,4 +1,5 @@
-import { List, Maybe } from 'monet';
+import { List } from 'monet';
+import { compose } from 'ramda';
 import { createTask, finishTask, TaskId, TaskList, TaskName, WaitingTask, } from './task.model';
 
 type MatrixId = number;
@@ -25,11 +26,7 @@ const add: AddTask = (matrix) => (task) => ({
 
 const Matrix: MatrixConstructor = (id) => ({ id, tasks: List() });
 
-const create: CreateTaskFromName = (name) => (matrix) => Maybe.Just(matrix)
-    .map(nextId)
-    .map(createTask(name))
-    .map(add(matrix))
-    .just();
+const create: CreateTaskFromName = (name) => (matrix) => compose(add(matrix), createTask(name), nextId)(matrix);
 
 const finish: FinishTaskById = (id) => (matrix) => ({
             id: matrix.id,

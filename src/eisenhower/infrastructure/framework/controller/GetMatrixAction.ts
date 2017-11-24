@@ -11,7 +11,7 @@ export class GetMatrixAction {
     constructor(@Inject(services.GET_MATRIX) private readonly getMatrix: GetMatrixView) {}
 
     @Get('/matrix/:id')
-    public handle(@Param('id', new ParseIntPipe()) id: MatrixId): MatrixView {
-        return this.getMatrix(id).cata(notFound(id), identity);
+    public handle(@Param('id', new ParseIntPipe()) id: MatrixId): Promise<MatrixView> {
+        return this.getMatrix(id).then(identity, notFound(id));
     }
 }

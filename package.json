@@ -27,7 +27,7 @@
     "@nestjs/testing": "^4.2.2",
     "@nestjs/websockets": "^4.2.2",
     "express": "^4.16.2",
-    "immutable": "^3.8.2",
+    "immutable": "^4.0.0-rc.9",
     "monet": "^0.9.0-alpha.4",
     "mysql": "^2.15.0",
     "pm2": "^2.7.2",

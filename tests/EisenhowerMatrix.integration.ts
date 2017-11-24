@@ -67,6 +67,8 @@ describe('eisenhower Matrix API', () => {
         expect(response.body).toBeDefined();
         expect(response.body.id).toEqual(MATRIX_ID);
         expect(response.body.tasks).toEqual(output);
+
+        expect(created.body).toEqual(response.body);
     });
 
     it('clears all tasks', async () => {
@@ -82,6 +84,7 @@ describe('eisenhower Matrix API', () => {
             .delete(`/matrix/${ MATRIX_ID }/tasks`);
 
         expect(cleared.status).toBe(HttpStatus.NO_CONTENT);
+        expect(cleared.body).toEqual({});
 
         const response: Response = await request(server)
             .get(`/matrix/${ MATRIX_ID }`);
@@ -93,29 +96,32 @@ describe('eisenhower Matrix API', () => {
         expect(response.body.tasks).toEqual([]);
     });
 
-    it('throws not found http error', async () => {
-        const NOT_EXISTING_MATRIX_ID = 0;
+    const NOT_EXISTING_MATRIX_ID = 0;
 
-        const error = {
-            message: `Matrix with id = ${ NOT_EXISTING_MATRIX_ID } not found`,
-            statusCode: HttpStatus.NOT_FOUND,
-        };
+    const error = {
+        message: `Matrix with id = ${ NOT_EXISTING_MATRIX_ID } not found`,
+        statusCode: HttpStatus.NOT_FOUND,
+    };
 
-        let response: Response;
-        response = await request(server)
+    it('throws not found http error on get matrix', async () => {
+        const response: Response = await request(server)
             .get(`/matrix/${ NOT_EXISTING_MATRIX_ID }`);
 
         expect(response.status).toBe(HttpStatus.NOT_FOUND);
         expect(response.body).toEqual(error);
+    });
 
-        response = await request(server)
+    it('throws not found http error on post matrix tasks', async () => {
+        const response: Response = await request(server)
             .post(`/matrix/${ NOT_EXISTING_MATRIX_ID }/tasks`)
             .send({});
 
         expect(response.status).toBe(HttpStatus.NOT_FOUND);
         expect(response.body).toEqual(error);
+    });
 
-        response = await request(server)
+    it('throws not found http error on delete matrix tasks', async () => {
+        const response: Response = await request(server)
             .delete(`/matrix/${ NOT_EXISTING_MATRIX_ID }/tasks`);
 
         expect(response.status).toBe(HttpStatus.NOT_FOUND);

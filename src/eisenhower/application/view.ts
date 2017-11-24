@@ -1,4 +1,3 @@
-import { Maybe } from 'monet';
 import { RepositoryGet } from '../../common/model/repository/repository';
 import { Matrix, MatrixId } from '../model/matrix.model';
 import { Task } from '../model/task.model';
@@ -8,7 +7,7 @@ interface MatrixView {
     tasks: Task[];
 }
 
-type GetMatrixView = (id: MatrixId) => Maybe<MatrixView>;
+type GetMatrixView = (id: MatrixId) => Promise<MatrixView>;
 
 const MatrixView = (matrix: Matrix): MatrixView => ({
     id: matrix.id,
@@ -16,7 +15,7 @@ const MatrixView = (matrix: Matrix): MatrixView => ({
 });
 
 const GetMatrixView: (repositoryGet: RepositoryGet<MatrixId, Matrix>) => GetMatrixView =
-    (repositoryGet) => (id) => repositoryGet(id).map(MatrixView);
+    (repositoryGet) => (id) => repositoryGet(id).then(MatrixView);
 
 export {
     MatrixView,

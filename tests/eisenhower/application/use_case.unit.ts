@@ -24,44 +24,44 @@ describe('An Eisenhower application', () => {
         clearTasks = ClearTasks(get, store);
     });
 
-    it('creates matrix with id and empty task list', () => {
-        const matrix = createMatrix(MATRIX_ID).just();
+    it('creates matrix with id and empty task list', async () => {
+        const matrix = await createMatrix(MATRIX_ID);
 
         expect(matrix.id).toBe(MATRIX_ID);
         expect(matrix.tasks.size()).toBe(0);
     });
 
-    it('adds task to matrix', () => {
-        createMatrix(MATRIX_ID);
+    it('adds task to matrix', async () => {
+        await createMatrix(MATRIX_ID);
 
-        addTask(MATRIX_ID, 'first task');
-        const matrix = addTask(MATRIX_ID, 'second task').just();
+        await addTask(MATRIX_ID, 'first task');
+        const matrix = await addTask(MATRIX_ID, 'second task');
 
         expect(matrix.tasks.size()).toEqual(2);
         expect(matrix.tasks.head()).toEqual(createTask('second task')(2));
         expect(matrix.tasks.tail().head()).toEqual(createTask('first task')(1));
     });
 
-    it('finishes tasks', () => {
-        createMatrix(MATRIX_ID);
+    it('finishes tasks', async () => {
+        await createMatrix(MATRIX_ID);
 
-        addTask(MATRIX_ID, 'first task');
-        addTask(MATRIX_ID, 'second task');
+        await addTask(MATRIX_ID, 'first task');
+        await addTask(MATRIX_ID, 'second task');
 
-        const matrix = finishTask(MATRIX_ID, 1).just();
+        const matrix = await finishTask(MATRIX_ID, 1);
 
         expect(matrix.tasks.size()).toEqual(2);
         expect(matrix.tasks.head().kind).toEqual(TaskKinds.WaitingTask);
         expect(matrix.tasks.tail().head().kind).toEqual(TaskKinds.FinishedTask);
     });
 
-    it('removes all tasks', () => {
-        createMatrix(MATRIX_ID);
+    it('removes all tasks', async () => {
+        await createMatrix(MATRIX_ID);
 
-        addTask(MATRIX_ID, 'first task');
-        addTask(MATRIX_ID, 'second task');
+        await addTask(MATRIX_ID, 'first task');
+        await addTask(MATRIX_ID, 'second task');
 
-        const matrix = clearTasks(MATRIX_ID).just();
+        const matrix = await clearTasks(MATRIX_ID);
 
         expect(matrix.tasks.size()).toEqual(0);
     });
